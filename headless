@@ -1,0 +1,21 @@
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local function applyHeadless(character)
+    local head = character:WaitForChild("Head", 10)
+    if not head then return end
+    head.Transparency = 1
+    for _, obj in ipairs(head:GetDescendants()) do
+        if obj:IsA("Decal") or obj:IsA("Texture") then
+            obj.Transparency = 1
+        elseif obj:IsA("SpecialMesh") then
+            obj.Scale = Vector3.new(0, 0, 0)
+        end
+    end
+end
+if player.Character then
+    applyHeadless(player.Character)
+end
+player.CharacterAdded:Connect(function(character)
+    task.wait(0.5)
+    applyHeadless(character)
+end)
